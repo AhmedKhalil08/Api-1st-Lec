@@ -1,4 +1,10 @@
 
+using API.Context;
+using API.Models;
+using API.Repo;
+using Microsoft.EntityFrameworkCore;
+using Swashbuckle;
+
 namespace API
 {
     public class Program
@@ -12,6 +18,13 @@ namespace API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            //Context
+            builder.Services.AddDbContext<APIContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
+            //swagger
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -19,6 +32,8 @@ namespace API
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseAuthorization();
