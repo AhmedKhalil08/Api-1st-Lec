@@ -4,6 +4,7 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(APIContext))]
-    partial class APIContextModelSnapshot : ModelSnapshot
+    [Migration("20260425094849_AddedDateOfBirth")]
+    partial class AddedDateOfBirth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,27 +24,6 @@ namespace API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("API.Models.Department", b =>
-                {
-                    b.Property<int>("DeptNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeptNumber"));
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DeptNumber");
-
-                    b.ToTable("Department");
-                });
 
             modelBuilder.Entity("API.Models.Student", b =>
                 {
@@ -61,9 +43,6 @@ namespace API.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DeptId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -75,23 +54,7 @@ namespace API.Migrations
 
                     b.HasKey("SSN");
 
-                    b.HasIndex("DeptId");
-
                     b.ToTable("Student");
-                });
-
-            modelBuilder.Entity("API.Models.Student", b =>
-                {
-                    b.HasOne("API.Models.Department", "Department")
-                        .WithMany("Students")
-                        .HasForeignKey("DeptId");
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("API.Models.Department", b =>
-                {
-                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

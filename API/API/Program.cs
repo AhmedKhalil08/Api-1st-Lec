@@ -1,5 +1,7 @@
 
 using API.Context;
+using API.Filters;
+using API.MiddleWares;
 using API.Models;
 using API.Repo;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,10 @@ namespace API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<GlobalExceptionFilter>();
+            });
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             //Context
@@ -23,6 +28,7 @@ namespace API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
+            builder.Services.AddScoped(typeof(IDepartmentRepository), typeof(DepartmentRepository));
             //swagger
             builder.Services.AddSwaggerGen();
 
@@ -35,9 +41,9 @@ namespace API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

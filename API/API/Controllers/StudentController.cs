@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.Filters;
+using API.Models;
 using API.Repo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ActionTimeFilter]
     public class StudentController : ControllerBase
     {
         private IStudentRepository studentrepo;
@@ -53,6 +55,11 @@ namespace API.Controllers
             studentrepo.Delete(id);
             studentrepo.Save();
             return Ok(new {msg="Student Deleted",data = std });
+        }
+        [HttpGet("crash")]
+        public IActionResult Crash()
+        {
+            throw new Exception("Something went wrong on purpose");
         }
     }
 }
