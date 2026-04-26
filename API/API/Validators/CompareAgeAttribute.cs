@@ -7,13 +7,19 @@ namespace API.Validators
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            var date = value as DateTime?;
-            var student = validationContext.ObjectInstance as Student;
-            var calculated = DateTime.Today.Year - date.Value.Year;
+            if (value is not DateTime date)
+                return ValidationResult.Success;
+
+            if (validationContext.ObjectInstance is not Student student)
+                return ValidationResult.Success;
+
+            var calculated = DateTime.Today.Year - date.Year;
+            if (date.Date > DateTime.Today.AddYears(-calculated))
+                calculated--;
+
             if (calculated != student.Age)
-            {
-                return new ValidationResult(ErrorMessage ?? "Age Not Compatable");
-            }
+                return new ValidationResult(ErrorMessage ?? "Age Not Compatible");
+
             return ValidationResult.Success;
         }
     }

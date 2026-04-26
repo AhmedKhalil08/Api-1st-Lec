@@ -1,6 +1,7 @@
 ﻿using API.Filters;
 using API.Models;
 using API.Repo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ActionTimeFilter]
+    [Authorize]
     public class StudentController : ControllerBase
     {
         private IStudentRepository studentrepo;

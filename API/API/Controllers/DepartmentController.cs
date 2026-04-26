@@ -8,6 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class DepartmentController : ControllerBase
     {
         IDepartmentRepository _repo;
