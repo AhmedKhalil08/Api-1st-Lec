@@ -24,7 +24,8 @@ namespace API.Controllers
                 DeptNumber = d.DeptNumber,
                 Name = d.Name,
                 Location = d.Location,
-                Students = d.Students.Select(s => s.Name).ToList()
+                Students = d.Students.Select(s => s.Name).ToList(),
+                StudentsCount=d.Students.Select(s=>s.Name).Count()
             });
             return Ok(result);
         }
