@@ -25,7 +25,15 @@ namespace API
             {
                 //options.Filters.Add<GlobalExceptionFilter>();
             });
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
             // identity db
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
                 options=>
@@ -80,6 +88,7 @@ namespace API
                 app.UseSwaggerUI();
             }
             //app.UseMiddleware<ExceptionMiddleware>();
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
 
